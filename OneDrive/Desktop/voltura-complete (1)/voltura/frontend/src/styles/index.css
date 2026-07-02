@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   THEME TOKENS — Light & Dark
+   RGB triplets (no # ) so Tailwind's <alpha-value> works
+============================================================ */
+:root {
+  --surface: 247 248 250;          /* page background */
+  --surface-subtle: 241 243 246;   /* sidebar / subtle panels */
+  --surface-raised: 255 255 255;   /* cards */
+  --surface-overlay: 255 255 255;  /* modals/popovers */
+
+  --border: 226 230 236;
+  --border-subtle: 235 238 242;
+
+  --ink: 15 23 42;
+  --ink-muted: 100 110 128;
+  --ink-faint: 148 157 174;
+}
+
+.dark {
+  --surface: 9 14 24;
+  --surface-subtle: 14 20 33;
+  --surface-raised: 17 24 39;
+  --surface-overlay: 22 30 47;
+
+  --border: 32 41 59;
+  --border-subtle: 26 34 51;
+
+  --ink: 236 240 247;
+  --ink-muted: 154 165 184;
+  --ink-faint: 100 110 128;
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface text-ink antialiased;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  /* Tabular numerals everywhere numbers appear — critical for KPI/table alignment */
+  .tabular,
+  table,
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight text-ink;
+  }
+
+  /* Visible keyboard focus — accessibility floor */
+  :focus-visible {
+    outline: 2px solid theme('colors.amber.400');
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-ink-faint;
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ============================================================
+   COMPONENTS — shared low-level patterns
+============================================================ */
+@layer components {
+  .glass-panel {
+    @apply bg-surface-raised/70 backdrop-blur-md border border-border-subtle;
+  }
+
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgb(var(--border-subtle)) 0%,
+      rgb(var(--border)) 50%,
+      rgb(var(--border-subtle)) 100%
+    );
+    background-size: 1400px 100%;
+    @apply animate-shimmer;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+}
+
+/* ============================================================
+   UTILITIES
+============================================================ */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
